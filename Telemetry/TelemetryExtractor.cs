@@ -1,8 +1,6 @@
 ﻿using BepInEx.Logging;
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 using UnityEngine;
 
@@ -17,6 +15,13 @@ namespace TelemetryLib
     internal class TelemetryExtractor
     {
         private Rigidbody _rigidBody;
+
+        public Vector3 LocalVelocity { get; private set; } = Vector3.zero;
+        public Vector3 LocalAngularVelocity { get; private set; } = Vector3.zero;
+
+        public float CentripetalForce;
+
+        private float smoothedAccelZ = 0f;
 
         protected Rigidbody rigidBody
         {
@@ -83,10 +88,11 @@ namespace TelemetryLib
            
 
             data.Rotation = rigidBody.rotation;
+            LocalAngularVelocity = rigidBody.transform.InverseTransformDirection(rigidBody.angularVelocity);
+            LocalVelocity = rigidBody.transform.InverseTransformDirection(rigidBody.velocity);
 
-
-            data.LocalAngularVelocity = rigidBody.transform.InverseTransformDirection(rigidBody.angularVelocity);
-            data.LocalVelocity = rigidBody.transform.InverseTransformDirection(rigidBody.velocity);
+            data.LocalAngularVelocity = LocalAngularVelocity;
+            data.LocalVelocity = LocalVelocity;
 
             switch (eulerType)
             {
@@ -100,12 +106,16 @@ namespace TelemetryLib
             }
 
 
-            data.Accel = (data.LocalVelocity - _previousLocalVelocity) / deltaTime / GRAVITY;
-            
+            data.Accel = (data.LocalVelocity - _previousLocalVelocity) / deltaTime / GRAVITY;            
+
+            //smoothedAccelZ = Mathf.Lerp(smoothedAccelZ, data.Accel.z, 0.1f);
+            //data.Accel.z = smoothedAccelZ;
 
             data.Speed = ForwardVelocity(); //data.Velocity.magnitude;
 
-            data.CentripetalForce = data.LocalAngularVelocity.magnitude * data.LocalAngularVelocity.magnitude * Math.Sign(data.LocalAngularVelocity.y);
+            CentripetalForce = LocalAngularVelocity.magnitude * LocalAngularVelocity.magnitude * Math.Sign(LocalAngularVelocity.y);
+
+            data.CentripetalForce = CentripetalForce;
 
             return data;
         }

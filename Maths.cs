@@ -1,5 +1,7 @@
 ﻿using System;
 
+using UnityEngine;
+
 
 namespace TelemetryLib
 {
@@ -65,6 +67,12 @@ namespace TelemetryLib
         public static float CopySign(float x, float y)
         {
             return Math.Sign(y) * Math.Abs(x);
+        }
+
+        public static Vector3 LocalizeVector(Quaternion qT, Vector3 v)
+        {
+            var q = Quaternion.Inverse(qT) * new Quaternion(v.x, v.y, v.z, 0) * qT;
+            return new Vector3(q.x, q.y, q.z);
         }
 
     }
