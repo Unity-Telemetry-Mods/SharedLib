@@ -7,57 +7,58 @@ namespace TelemetryLib
 {
     internal class Maths
     {
+        public const float GRAVITY = 9.81f;
+
+        public const float Tau = 6.283185307179586476925286766559f;
+
         public const float PI = (float)Math.PI;
 
         public const float DEG_2_RAD = (float)Math.PI / 180f;
 
         public const float RAD_2_DEG = 57.29578f;
 
-        public static float HemiCircle(float angle)
+        public static float HemiCircle(float degrees)
         {
-            return angle >= 180 ? angle - 360 : angle;
+            return degrees >= 180 ? degrees - 360 : degrees;
         }
 
-        public static float ReverseHemiCircle(float angle)
+        public static float ReverseHemiCircle(float degrees)
         {
-            return angle < 0 ? 360 + angle : angle;
+            return degrees < 0 ? 360 + degrees : degrees;
         }
 
-        //public float CalculateCentripetalAcceleration(Vector3 velocity, Vector3 angularVelocity)
-        //{
-        //    var Fc = velocity.Length() * angularVelocity.Length();
+        public static float CalculateCentripetalAcceleration(Vector3 velocity, Vector3 angularVelocity)
+        {
+            return velocity.magnitude * angularVelocity.magnitude* Mathf.Sign(angularVelocity.y);
+        }
 
-        //    return Fc * (angularVelocity.Y >= 0 ? -1 : 1);
-
-        //}
-
-        public static double MapRange(double x, double xMin, double xMax, double yMin, double yMax)
+        public static float MapRange(float x, float xMin, float xMax, float yMin, float yMax)
         {
             return yMin + (yMax - yMin) * (x - xMin) / (xMax - xMin);
         }
 
-        public static double EnsureMapRange(double x, double xMin, double xMax, double yMin, double yMax)
+        public static float EnsureMapRange(float x, float xMin, float xMax, float yMin, float yMax)
         {
-            return Math.Max(Math.Min(MapRange(x, xMin, xMax, yMin, yMax), Math.Max(yMin, yMax)), Math.Min(yMin, yMax));
+            return Mathf.Max(Mathf.Min(MapRange(x, xMin, xMax, yMin, yMax), Mathf.Max(yMin, yMax)), Mathf.Min(yMin, yMax));
         }
 
 
         /// <summary>
-        /// Limit angle to a maximum value 
+        /// Limit degrees to a maximum value 
         /// </summary>
         /// <param name="degrees"></param>
         /// <param name="max"></param>
         /// <returns></returns>
-        public static double LimitAngle(double degrees, float inputRange, float max)
+        public static float LimitAngle(float degrees, float inputRange, float max)
         {
-            double v = 0;
-            if (Math.Abs(degrees) <= inputRange)
+            float v = 0;
+            if (Mathf.Abs(degrees) <= inputRange)
             {
                 v = degrees;
             }
             else
             {
-                v = (180 - Math.Abs(degrees)) * (degrees < 0 ? -1 : 1);
+                v = (180 - Mathf.Abs(degrees)) * (degrees < 0 ? -1 : 1);
             }
 
 
@@ -66,7 +67,7 @@ namespace TelemetryLib
         
         public static float CopySign(float x, float y)
         {
-            return Math.Sign(y) * Math.Abs(x);
+            return Mathf.Sign(y) * Mathf.Abs(x);
         }
 
         public static Vector3 LocalizeVector(Quaternion qT, Vector3 v)

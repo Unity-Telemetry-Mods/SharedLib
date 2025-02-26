@@ -21,7 +21,7 @@ namespace TelemetryLib
 
         public float CentripetalForce;
 
-        private float smoothedAccelZ = 0f;
+        
 
         protected Rigidbody rigidBody
         {
@@ -48,7 +48,7 @@ namespace TelemetryLib
         float _yaw = 0f;
         private Vector3 _previousLocalVelocity = Vector3.zero;
 
-        private const float GRAVITY = 9.81f;
+       
 
         ManualLogSource logger;
         public TelemetryExtractor()
@@ -87,7 +87,7 @@ namespace TelemetryLib
 
            
 
-            data.Rotation = rigidBody.rotation;
+            data.Rotation = rigidBody.transform.rotation;
             LocalAngularVelocity = rigidBody.transform.InverseTransformDirection(rigidBody.angularVelocity);
             LocalVelocity = rigidBody.transform.InverseTransformDirection(rigidBody.velocity);
 
@@ -106,14 +106,12 @@ namespace TelemetryLib
             }
 
 
-            data.Accel = (data.LocalVelocity - _previousLocalVelocity) / deltaTime / GRAVITY;            
+            data.Accel = (data.LocalVelocity - _previousLocalVelocity) / deltaTime / Maths.GRAVITY;            
 
-            //smoothedAccelZ = Mathf.Lerp(smoothedAccelZ, data.Accel.z, 0.1f);
-            //data.Accel.z = smoothedAccelZ;
+            
 
-            data.Speed = ForwardVelocity(); //data.Velocity.magnitude;
-
-            CentripetalForce = LocalAngularVelocity.magnitude * LocalAngularVelocity.magnitude * Math.Sign(LocalAngularVelocity.y);
+            data.Speed = ForwardVelocity(); 
+            CentripetalForce = Maths.CalculateCentripetalAcceleration(LocalVelocity, LocalAngularVelocity);            
 
             data.CentripetalForce = CentripetalForce;
 
