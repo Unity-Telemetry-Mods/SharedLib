@@ -6,14 +6,10 @@
     <SharedGUID>eeb444e9-0b1f-467d-b01c-edba291bc941</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>TelemetryLibrary</Import_RootNamespace>
+    <Import_RootNamespace>SharedLib</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Maths.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\TelemetryExtractor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\MmfTelemetry.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\TelemetryBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Telemetry\UdpTelemetry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TelemetryExtractor.cs" />
   </ItemGroup>
 </Project>
