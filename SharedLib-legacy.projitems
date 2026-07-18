@@ -10,6 +10,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Maths.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TelemetryLib\MmfTelemetry.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TelemetryLib\TelemetryBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TelemetryExtractor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TelemetryLib\UdpTelemetry.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)TelemetryLib\" />
   </ItemGroup>
 </Project>

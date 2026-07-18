@@ -4,7 +4,7 @@ using System;
 
 using UnityEngine;
 
-namespace TelemetryLib
+namespace Sharedlib
 {
     internal enum EulerType
     {
